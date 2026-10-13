@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+
+cd "$(dirname "$0")"
+
+wclean libso src/ODE
+wclean applications/solvers/chemFoam_profiled

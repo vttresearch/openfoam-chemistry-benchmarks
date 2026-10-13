@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+
+if [[ ! -f third_party/perfetto/sdk/perfetto.h || ! -f third_party/perfetto/sdk/perfetto.cc ]]; then
+    echo "Perfetto SDK not found in third_party/perfetto/sdk"
+    echo "Run: ./scripts/install_perfetto.sh"
+    exit 1
+fi
+
+wmake src/ODE
+wmake applications/solvers/chemFoam_profiled

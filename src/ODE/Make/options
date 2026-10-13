@@ -1,0 +1,10 @@
+CC = g++ -std=c++17 -m64
+
+EXE_INC = \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/ODE/lnInclude \
+    -I../../third_party/perfetto/sdk
+
+LIB_LIBS = \
+    -lfiniteVolume \
+    -lODE

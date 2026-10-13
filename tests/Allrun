@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if [ -z "$WM_PROJECT_DIR" ]; then
+    echo "Error: OpenFOAM environment not sourced. Please source OpenFOAM before running this script."
+    exit 1
+fi
+if [ ! -f "$FOAM_USER_APPBIN/chemFoam_profiled" ]; then
+    echo "Error: chemFoam_profiled solver not found."
+    exit 1
+fi
+if [ ! -f "$FOAM_USER_LIBBIN/libODEprofiled.so" ]; then
+    echo "Error: libODEprofiled.so not found."
+    exit 1
+fi
+
+# for CASE in $(ls $WM_PROJECT_DIR/test/chemistry); do
+for CASE in gri h2; do
+    if [ -f "$WM_PROJECT_DIR/test/chemistry/$CASE/system/controlDict" ]; then
+        cp -r $WM_PROJECT_DIR/test/chemistry/$CASE ${CASE}_profiled
+        pushd ${CASE}_profiled
+            foamDictionary -entry libs -set '( "libODEprofiled.so" )' system/controlDict
+            foamDictionary -entry adjustTimeStep -set no system/controlDict
+            foamDictionary -entry deltaT -set "1e-04" system/controlDict
+            foamDictionary -entry ode/solver -set "seulex_profiled" constant/chemistryProperties
+            sed -i 's/runApplication chemFoam/runApplication chemFoam_profiled/g' Allrun
+            ./Allrun
+        popd
+    fi
+done

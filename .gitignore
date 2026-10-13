@@ -1,0 +1,19 @@
+# OpenFOAM build artifacts
+**/Make/linux*/
+**/lnInclude/
+*.o
+*.dep
+
+# Runtime and profiling output
+*.perfetto-trace
+log.*
+postProcessing/
+
+# Locally installed Perfetto SDK
+/third_party/perfetto/sdk/
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
